@@ -145,6 +145,41 @@ class DB {
         return $sql;
     }
     
+    /**
+     * @todo fix this method
+     * 
+     */
+    function _escape_identifiers($item)
+    {
+        if ($this->_escape_char == '')
+        {
+            return $item;
+        }
+
+        foreach ($this->_reserved_identifiers as $id)
+        {
+            if (strpos($item, '.'.$id) !== FALSE)
+            {
+                $str = $this->_escape_char. str_replace('.', $this->_escape_char.'.', $item);  
+                
+                // remove duplicates if the user already included the escape
+                return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
+            }       
+        }
+        
+        if (strpos($item, '.') !== FALSE)
+        {
+            $str = $this->_escape_char.str_replace('.', $this->_escape_char.'.'.$this->_escape_char, $item).$this->_escape_char;            
+        }
+        else
+        {
+            $str = $this->_escape_char.$item.$this->_escape_char;
+        }
+    
+        // remove duplicates if the user already included the escape
+        return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
+    }
+    
     function simple_query($sql)
     {
         if ( ! $this->_conn_id)
@@ -375,96 +410,9 @@ class DB {
         return mysql_errno($this->_conn_id);
     }
 
-    function _escape_identifiers($item)
-    {
-        if ($this->_escape_char == '')
-        {
-            return $item;
-        }
-
-        foreach ($this->_reserved_identifiers as $id)
-        {
-            if (strpos($item, '.'.$id) !== FALSE)
-            {
-                $str = $this->_escape_char. str_replace('.', $this->_escape_char.'.', $item);  
-                
-                // remove duplicates if the user already included the escape
-                return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
-            }       
-        }
-        
-        if (strpos($item, '.') !== FALSE)
-        {
-            $str = $this->_escape_char.str_replace('.', $this->_escape_char.'.'.$this->_escape_char, $item).$this->_escape_char;            
-        }
-        else
-        {
-            $str = $this->_escape_char.$item.$this->_escape_char;
-        }
-    
-        // remove duplicates if the user already included the escape
-        return preg_replace('/['.$this->_escape_char.']+/', $this->_escape_char, $str);
-    }
-            
-    function _from_tables($tables)
-    {
-        if ( ! is_array($tables))
-        {
-            $tables = array($tables);
-        }
-        
-        return '('.implode(', ', $tables).')';
-    }
-
-    function _insert($table, $keys, $values)
-    {   
-        return "INSERT INTO ".$table." (".implode(', ', $keys).") VALUES (".implode(', ', $values).")";
-    }
-    
-    function _update($table, $values, $where, $orderby = array(), $limit = FALSE)
-    {
-        foreach($values as $key => $val)
-        {
-            $valstr[] = $key." = ".$val;
-        }
-        
-        $limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
-        
-        $orderby = (count($orderby) >= 1)?' ORDER BY '.implode(", ", $orderby):'';
-    
-        $sql = "UPDATE ".$table." SET ".implode(', ', $valstr);
-
-        $sql .= ($where != '' AND count($where) >=1) ? " WHERE ".implode(" ", $where) : '';
-
-        $sql .= $orderby.$limit;
-        
-        return $sql;
-    }
-
     function _truncate($table)
     {
         return "TRUNCATE ".$table;
-    }
-    
-    function _delete($table, $where = array(), $like = array(), $limit = FALSE)
-    {
-        $conditions = '';
-
-        if (count($where) > 0 OR count($like) > 0)
-        {
-            $conditions = "\nWHERE ";
-            $conditions .= implode("\n", $this->ar_where);
-
-            if (count($where) > 0 && count($like) > 0)
-            {
-                $conditions .= " AND ";
-            }
-            $conditions .= implode("\n", $like);
-        }
-
-        $limit = ( ! $limit) ? '' : ' LIMIT '.$limit;
-    
-        return "DELETE FROM ".$table.$conditions.$limit;
     }
 
     function _close($conn_id)
