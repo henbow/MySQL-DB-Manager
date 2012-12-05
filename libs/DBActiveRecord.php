@@ -53,8 +53,6 @@ class DB_active_record extends DB {
         $this->_sql .= $this->_order_by;
         $this->_sql .= $this->_limit;
         
-        return $this->_sql;
-        
         return $this->reset_all()->query($this->_sql);
     }
     
