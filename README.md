@@ -3,8 +3,8 @@ MySQL-DB-Manager
 
 DB Manager for MySQL with Active Record (but still limited). I use this DB Manager in several of my PHP projects.
 
-<strong>How to use it:</strong>
-
+<h2><strong>How to use it:</strong></h2>
+<h4>Select data:</h4>
 <pre>
 &lt;?php
 include '../libs/DBActiveRecord.php';
