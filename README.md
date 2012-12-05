@@ -1,4 +1,4 @@
 MySQL-DB-Manager
 ================
 
-Just another DB Manager for MySQL. I use this DB Manager in my projects that doesn't use frameworks like CodeIgniter
+DB Manager for MySQL with Active Record (but still limited). I use this DB Manager in several of my PHP projects.
