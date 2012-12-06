@@ -17,7 +17,7 @@ class DBConfig
     public static $db_pconnect = FALSE;
     
     // Available options is mysqli, mysql. Currently unused.
-    public static $db_driver = 'mysql';
+    public static $db_driver = 'mysqli';
 }
 
 /**
