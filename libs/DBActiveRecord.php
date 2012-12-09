@@ -144,7 +144,11 @@ class DB_active_record extends DB {
             $wh = array();
             
             foreach($where as $fields => $values) {
-                $wh[] = $fields ." = '" . $values . "'";
+                if(preg_match("/(\s|<|>|!|=|is null|is not null)/i", $fields)) {
+               		$wh[] = $fields ." '" . $values . "'";
+				} else {
+	                $wh[] = $fields ." = '" . $values . "'";
+				}
             }
             
             $condition = implode(' ' . $condition_keyword . ' ', $wh);
