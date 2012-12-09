@@ -1,16 +1,19 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting('E_ALL');
+
 include '../libs/DBActiveRecord.php';
 
 $db = new DB_active_record();
 
-// Use get() method to select data from database
-$db->get('cds');
-$data1 = $db->result_array();
-
-// Using chainable method
-$data2 = $db->get('cds')->result_array();
-
-print '<pre>';
-print_r($data1);
-print_r($data2);
-print '</pre>';
+$db->select('col1,col2')
+	->from('table1')
+	->where(array(
+		'col1' => '1', 
+		'col2' => 'title of content'
+	))
+   	->where("col3 = 'desc of content'")
+	->order_by('col2', 'desc')
+	->_build_query();
+	
+echo $db->get_queries();
