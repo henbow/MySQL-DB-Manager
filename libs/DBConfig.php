@@ -11,7 +11,7 @@ class DBConfig
 {
     public static $db_host = 'localhost';
     public static $db_user = 'root';
-    public static $db_pass = '140712';
+    public static $db_pass = '';
     public static $db_name = 'cdcol';
     public static $db_port = '';
     public static $db_pconnect = FALSE;
