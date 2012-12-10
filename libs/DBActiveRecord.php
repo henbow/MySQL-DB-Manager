@@ -140,15 +140,14 @@ class DB_active_record extends DB {
     function where($where, $condition_keyword = 'AND') {
         $condition = "";
         
-        if(is_array($where)) {            
+        if(is_array($where)) {
             foreach($where as $fields => $values) {
                 if(preg_match("/(\s|<|>|!|=|is null|is not null)/i", $fields)) {
-               		$condition .= " AND " . $fields ." '" . $values . "'";
+               		$condition .= " " . $condition_keyword . " " . $fields ." '" . $values . "'";
 				} else {
-	                $condition .= " AND " . $fields ." = '" . $values . "'";
+	                $condition .= " " . $condition_keyword . " " . $fields ." = '" . $values . "'";
 				}
             }
-            
         } else {
             $condition = $where;
         }
