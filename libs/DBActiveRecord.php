@@ -182,6 +182,15 @@ class DB_active_record extends DB {
         return $this;
     }
     
+	/**
+	 * Generate LIKE clause
+	 * @access public 
+	 * @param array $like. Array of field names and values as key value pairs.
+	 * @param string $condition_keyword <Optional>. This parameter has value 'AND' or 'OR'. Default is 'AND'.
+	 * @param string $prefix <Optional>. This parameter has value 'BOTH', 'BEFORE', or 'AFTER'. Default is 'BOTH'.
+	 * @return object $this. Return the class object to maintain chainability.
+	 * 
+	 */
     function like($like, $condition_keyword = 'AND', $prefix = 'BOTH') {
         $condition = "";
         
@@ -208,15 +217,22 @@ class DB_active_record extends DB {
             }
             
             $condition = implode(' ' . $condition_keyword . ' ', $conditions);
-        } else {
-            $condition = $like;
-        }
-        
-        $this->_like = " " . $condition_keyword . " " . $condition;
+			
+			$this->_like = " " . $condition_keyword . " " . $condition;
+        } 
         
         return $this;
     }
 
+	/**
+	 * Generate NOT LIKE clause
+	 * @access public 
+	 * @param array $like. Array of field names and values as key value pairs.
+	 * @param string $condition_keyword <Optional>. This parameter has value 'AND' or 'OR'. Default is 'AND'.
+	 * @param string $prefix <Optional>. This parameter has value 'BOTH', 'BEFORE', or 'AFTER'. Default is 'BOTH'.
+	 * @return object $this. Return the class object to maintain chainability.
+	 * 
+	 */
 	function not_like($like, $condition_keyword = 'AND', $prefix = 'BOTH') {
         $condition = "";
         
@@ -243,11 +259,9 @@ class DB_active_record extends DB {
             }
             
             $condition = implode(' ' . $condition_keyword . ' ', $conditions);
-        } else {
-            $condition = $like;
-        }
-        
-        $this->_like = " " . $condition_keyword . " " . $condition;
+			
+			$this->_like = " " . $condition_keyword . " " . $condition;
+        }        
         
         return $this;
     }
